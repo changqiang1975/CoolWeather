@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<litepal>
+    <dbname value="area.db"/>
+    <version value="1"/>
+    <list>
+        <mapping class="com.changqiang.coolweather.db.Province"/>
+        <mapping class="com.changqiang.coolweather.db.City"/>
+        <mapping class="com.changqiang.coolweather.db.County"/>
+    </list>
+</litepal>
