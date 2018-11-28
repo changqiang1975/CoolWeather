@@ -1,6 +1,7 @@
 package com.changqiang.coolweather;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.changqiang.coolweather.db.City;
 import com.changqiang.coolweather.db.County;
 import com.changqiang.coolweather.db.Province;
+import com.changqiang.coolweather.gson.Weather;
 import com.changqiang.coolweather.utils.HttpUtility;
 import com.changqiang.coolweather.utils.Utility;
 
@@ -90,7 +92,20 @@ public class ChooseAreaFragment extends Fragment
 
                     case LEVEL_COUNTY:
                         currentCounty = countyList.get(i);
-
+                        if(getActivity() instanceof MainActivity)
+                        {
+                            Intent intent = new Intent(getContext(), WeatherActivity.class);
+                            intent.putExtra("weather_id", currentCounty.getWeatherId());
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
+                        else if(getActivity() instanceof WeatherActivity)
+                        {
+                            WeatherActivity activity = (WeatherActivity)getActivity();
+                            activity.drawerLayout.closeDrawers();
+                            activity.swipeRefresh.setRefreshing(true);
+                            activity.requestWeather(currentCounty.getWeatherId());
+                        }
                         break;
 
                     default:
