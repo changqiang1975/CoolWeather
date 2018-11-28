@@ -202,19 +202,21 @@ public class WeatherActivity extends AppCompatActivity
             {
                 final String responseText = response.body().string();
                 final Weather weather = Utility.handleWeatherResponse(responseText);
-
-                runOnUiThread(new Runnable()
+                if(weather != null && weather.status.equals("ok"))
                 {
-                    @Override
-                    public void run()
+                    runOnUiThread(new Runnable()
                     {
-                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-                        editor.putString("weather", responseText);
-                        editor.apply();
-                        swipeRefresh.setRefreshing(false);
-                        showWeatherInfo(weather);
-                    }
-                });
+                        @Override
+                        public void run()
+                        {
+                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
+                            editor.putString("weather", responseText);
+                            editor.apply();
+                            swipeRefresh.setRefreshing(false);
+                            showWeatherInfo(weather);
+                        }
+                    });
+                }
             }
         });
     }
@@ -253,6 +255,15 @@ public class WeatherActivity extends AppCompatActivity
             suggestion_comfort.setText("舒适度：" + weather.suggestion.comfort.info);
             suggestion_car_wash.setText("洗车指数：" + weather.suggestion.carWash.info);
             suggestion_sport.setText("运动指数：" + weather.suggestion.sport.info);
+
+
+            Intent intent = new Intent(this, UpdateWeatherService.class);
+            startService(intent);
+
+        }
+        else
+        {
+            Toast.makeText(this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
         }
     }
 }

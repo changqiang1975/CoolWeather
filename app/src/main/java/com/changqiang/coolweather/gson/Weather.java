@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Weather
 {
+    public String status;
     public Basic basic;
     public Now now;
     public AQI aqi;
